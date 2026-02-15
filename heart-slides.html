@@ -9,7 +9,7 @@
 * {margin:0; padding:0; box-sizing:border-box;}
 html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
 
-.slide{
+.slide {
   position:absolute;
   width:100%;
   height:100%;
@@ -18,22 +18,22 @@ html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
   align-items:center;
   flex-direction:column;
   overflow:hidden;
-  transition:opacity 0.5s ease;
+  transition: opacity 0.5s ease;
 }
-.hidden{opacity:0; pointer-events:none;}
+.hidden {opacity:0; pointer-events:none;}
 
-.slide-bg{
+.slide-bg {
   position:absolute;
   width:100%;
   height:100%;
   display:grid;
-  grid-template-columns:repeat(30,1fr);
-  grid-template-rows:repeat(19,1fr);
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(19, 1fr);
   gap:10px;
   z-index:0;
 }
 
-.bg-heart{
+.bg-heart {
   font-size:10px;
   color:pink;
   display:flex;
@@ -43,23 +43,23 @@ html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
   font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
 }
 
-.center-image{
+.center-image {
   width:150px;
   height:150px;
   object-fit:contain;
   z-index:1;
   display:none;
-  animation:pop 0.8s ease forwards;
+  animation: pop 0.8s ease forwards;
 }
 
-@keyframes pop{
-  0%{transform:scale(0);}
-  100%{transform:scale(1);}
+@keyframes pop {
+  0% {transform: scale(0);}
+  100% {transform: scale(1);}
 }
 
-#slide3{background:black;}
+#slide3 {background:black;}
 
-.slide3-content{
+.slide3-content {
   width:100%;
   height:100%;
   overflow-y:auto;
@@ -69,32 +69,32 @@ html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
   padding:20px;
 }
 
-.typewriter-text{
+.typewriter-text {
   font-size:20px;
   font-weight:bold;
   color:red;
   width:90%;
   max-width:400px;
   margin-top:20px;
-  white-space:pre-wrap;
+  white-space: pre-wrap;
   text-align:left;
 }
 
-.yours{
+.yours {
   margin-top:20px;
   font-size:22px;
   color:red;
   display:none;
 }
 
-.heart{
+.heart {
   position:absolute;
   font-size:30px;
   user-select:none;
   pointer-events:none;
 }
 
-.text-box{
+.text-box {
   background:pink;
   color:red;
   padding:8px 15px;
@@ -104,7 +104,7 @@ html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
   z-index:2;
 }
 
-.open-box{cursor:pointer;}
+.open-box {cursor:pointer;}
 </style>
 </head>
 
@@ -134,78 +134,97 @@ html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
 </div>
 
 <script>
-// 🔒 FIXED MESSAGE — ONLY YOURS
-const customMessage = `Yahan apna exact personal message likho
-jo sirf tumhare liye hai 💗
-Koi aur ise change nahi kar sakta.`;
+// 🔒 FIXED PERSONAL MESSAGE
+const customMessage = `Yahan apna personal message likho 💗
+Ye message sirf tumhare liye hai
+Aur koi ise change nahi kar sakta.`;
 
 const yourName = "Samridhi 💖";
 
-const slides=[slide1,slide2,slide3];
-let current=0;
+// Elements
+const slide1 = document.getElementById("slide1");
+const slide2 = document.getElementById("slide2");
+const slide3 = document.getElementById("slide3");
 
+const slide1Image = document.getElementById("slide1-image");
+const slide2Image = document.getElementById("slide2-image");
+
+const slide1Open = document.getElementById("slide1-open");
+const slide2Open = document.getElementById("slide2-open");
+
+const slides = [slide1, slide2, slide3];
+let current = 0;
+
+// Background hearts
 function addHearts(id){
-  const bg=document.getElementById(id);
+  const bg = document.getElementById(id);
   for(let i=0;i<19;i++){
     for(let j=0;j<30;j++){
-      const h=document.createElement("div");
-      h.className="bg-heart";
-      h.textContent="❤️";
+      const h = document.createElement("div");
+      h.className = "bg-heart";
+      h.textContent = "❤️";
       bg.appendChild(h);
     }
   }
 }
-
 addHearts("slide1-bg");
 addHearts("slide2-bg");
 
-slide1-image.style.display="block";
+// Show first image
+slide1Image.style.display = "block";
 
-slide1-open.onclick=next;
-slide2-open.onclick=next;
+// Slide navigation
+slide1Open.onclick = next;
+slide2Open.onclick = next;
 
 function next(){
   slides[current].classList.add("hidden");
   current++;
   slides[current].classList.remove("hidden");
-  if(current===1) slide2-image.style.display="block";
-  if(current===2){
+
+  if(current === 1){
+    slide2Image.style.display = "block";
+  }
+  if(current === 2){
     floatingHearts();
     typeWriter();
   }
 }
 
+// Typewriter
 function typeWriter(){
-  let i=0;
-  const el=typewriter;
-  const timer=setInterval(()=>{
-    if(i<customMessage.length){
-      el.textContent+=customMessage[i++];
-      el.parentElement.scrollTop=el.parentElement.scrollHeight;
-    }else{
+  let i = 0;
+  const el = document.getElementById("typewriter");
+  const timer = setInterval(()=>{
+    if(i < customMessage.length){
+      el.textContent += customMessage[i++];
+      el.parentElement.scrollTop = el.parentElement.scrollHeight;
+    } else {
       clearInterval(timer);
-      sign.textContent=`– YOURS ${yourName} 💗`;
-      sign.style.display="block";
+      const sign = document.getElementById("sign");
+      sign.textContent = `– YOURS ${yourName} 💗`;
+      sign.style.display = "block";
     }
-  },50);
+  }, 50);
 }
 
+// Floating hearts
 function floatingHearts(){
   for(let i=0;i<50;i++){
-    const h=document.createElement("div");
-    h.className="heart";
-    h.textContent="❤️";
-    h.style.left=Math.random()*100+"vw";
-    h.style.top=Math.random()*100+"vh";
-    h.style.fontSize=20+Math.random()*30+"px";
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = "❤️";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.top = Math.random()*100 + "vh";
+    h.style.fontSize = (20 + Math.random()*30) + "px";
     slide3.appendChild(h);
 
-    let dx=(Math.random()-0.5)*0.5;
-    let dy=(Math.random()-0.5)*0.5;
+    let dx = (Math.random()-0.5)*0.4;
+    let dy = (Math.random()-0.5)*0.4;
 
     setInterval(()=>{
-      h.style.left=parseFloat(h.style.left)+dx+"vw";
-      h.style.top=parseFloat(h.style.top)+dy+"vh";
+      h.style.left = (parseFloat(h.style.left) + dx) + "vw";
+      h.style.top = (parseFloat(h.style.top) + dy) + "vh";
     },40);
   }
 }
