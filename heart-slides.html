@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heart Slides</title>
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+html, body {width:100%; height:100%; overflow:hidden; font-family:sans-serif;}
+
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  overflow:hidden;
+  transition:opacity 0.5s ease;
+}
+.hidden{opacity:0; pointer-events:none;}
+
+.slide-bg{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns:repeat(30,1fr);
+  grid-template-rows:repeat(19,1fr);
+  gap:10px;
+  z-index:0;
+}
+
+.bg-heart{
+  font-size:10px;
+  color:pink;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  user-select:none;
+  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+}
+
+.center-image{
+  width:150px;
+  height:150px;
+  object-fit:contain;
+  z-index:1;
+  display:none;
+  animation:pop 0.8s ease forwards;
+}
+
+@keyframes pop{
+  0%{transform:scale(0);}
+  100%{transform:scale(1);}
+}
+
+#slide3{background:black;}
+
+.slide3-content{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+}
+
+.typewriter-text{
+  font-size:20px;
+  font-weight:bold;
+  color:red;
+  width:90%;
+  max-width:400px;
+  margin-top:20px;
+  white-space:pre-wrap;
+  text-align:left;
+}
+
+.yours{
+  margin-top:20px;
+  font-size:22px;
+  color:red;
+  display:none;
+}
+
+.heart{
+  position:absolute;
+  font-size:30px;
+  user-select:none;
+  pointer-events:none;
+}
+
+.text-box{
+  background:pink;
+  color:red;
+  padding:8px 15px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:20px;
+  z-index:2;
+}
+
+.open-box{cursor:pointer;}
+</style>
+</head>
+
+<body>
+
+<!-- Slide 1 -->
+<div class="slide" id="slide1" style="background:#ffe6f0;">
+  <div class="slide-bg" id="slide1-bg"></div>
+  <div class="text-box">HEY THERE 🥹❤️</div>
+  <img src="gift.png" class="center-image" id="slide1-image">
+  <div class="text-box open-box" id="slide1-open">open me 👻</div>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide hidden" id="slide2" style="background:black;">
+  <div class="slide-bg" id="slide2-bg"></div>
+  <img src="letter.png" class="center-image" id="slide2-image">
+  <div class="text-box open-box" id="slide2-open">open me 👻</div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide hidden" id="slide3">
+  <div class="slide3-content">
+    <div class="typewriter-text" id="typewriter"></div>
+    <div class="yours" id="sign"></div>
+  </div>
+</div>
+
+<script>
+// 🔒 FIXED MESSAGE — ONLY YOURS
+const customMessage = `Yahan apna exact personal message likho
+jo sirf tumhare liye hai 💗
+Koi aur ise change nahi kar sakta.`;
+
+const yourName = "Samridhi 💖";
+
+const slides=[slide1,slide2,slide3];
+let current=0;
+
+function addHearts(id){
+  const bg=document.getElementById(id);
+  for(let i=0;i<19;i++){
+    for(let j=0;j<30;j++){
+      const h=document.createElement("div");
+      h.className="bg-heart";
+      h.textContent="❤️";
+      bg.appendChild(h);
+    }
+  }
+}
+
+addHearts("slide1-bg");
+addHearts("slide2-bg");
+
+slide1-image.style.display="block";
+
+slide1-open.onclick=next;
+slide2-open.onclick=next;
+
+function next(){
+  slides[current].classList.add("hidden");
+  current++;
+  slides[current].classList.remove("hidden");
+  if(current===1) slide2-image.style.display="block";
+  if(current===2){
+    floatingHearts();
+    typeWriter();
+  }
+}
+
+function typeWriter(){
+  let i=0;
+  const el=typewriter;
+  const timer=setInterval(()=>{
+    if(i<customMessage.length){
+      el.textContent+=customMessage[i++];
+      el.parentElement.scrollTop=el.parentElement.scrollHeight;
+    }else{
+      clearInterval(timer);
+      sign.textContent=`– YOURS ${yourName} 💗`;
+      sign.style.display="block";
+    }
+  },50);
+}
+
+function floatingHearts(){
+  for(let i=0;i<50;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.textContent="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.top=Math.random()*100+"vh";
+    h.style.fontSize=20+Math.random()*30+"px";
+    slide3.appendChild(h);
+
+    let dx=(Math.random()-0.5)*0.5;
+    let dy=(Math.random()-0.5)*0.5;
+
+    setInterval(()=>{
+      h.style.left=parseFloat(h.style.left)+dx+"vw";
+      h.style.top=parseFloat(h.style.top)+dy+"vh";
+    },40);
+  }
+}
+</script>
+
+</body>
+</html>
